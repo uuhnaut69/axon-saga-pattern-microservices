@@ -1,0 +1,13 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: inventory-application
+  data:
+    mongodb:
+      database: inventory
+      host: localhost
+      port: 27017
+axon:
+  axonserver:
+    servers: localhost

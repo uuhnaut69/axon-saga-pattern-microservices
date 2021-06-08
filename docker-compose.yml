@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  axon-server:
+    container_name: axon-server
+    image: axoniq/axonserver
+    ports:
+      - 8024:8024
+      - 8124:8124
+
+  inventory-database:
+    container_name: inventory-database
+    image: mongo
+    ports:
+      - 27017:27017
