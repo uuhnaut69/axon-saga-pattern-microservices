@@ -3,17 +3,14 @@ package com.uuhnaut69.inventory.query;
 import com.uuhnaut69.common.exception.NotFoundException;
 import com.uuhnaut69.inventory.core.CreatedProductEvent;
 import com.uuhnaut69.inventory.core.UpdatedProductEvent;
-import com.uuhnaut69.inventory.query.type.FindAll;
-import com.uuhnaut69.inventory.query.type.FindByProductId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Component
@@ -23,6 +20,7 @@ public class ProductProjection {
   private final ProductRepository productRepository;
 
   @EventHandler
+  @Transactional
   public void handle(CreatedProductEvent createdProductEvent) {
     log.info("Received created product event {}", createdProductEvent);
     var product =
@@ -32,10 +30,11 @@ public class ProductProjection {
             createdProductEvent.getDescription(),
             createdProductEvent.getPrice(),
             createdProductEvent.getStock());
-    productRepository.save(product).subscribe();
+    productRepository.save(product);
   }
 
   @EventHandler
+  @Transactional
   public void handle(UpdatedProductEvent updatedProductEvent) {
     log.info("Received updated product event {}", updatedProductEvent);
     var product =
@@ -45,22 +44,18 @@ public class ProductProjection {
             updatedProductEvent.getDescription(),
             updatedProductEvent.getPrice(),
             updatedProductEvent.getStock());
-    productRepository.save(product).subscribe();
+    productRepository.save(product);
   }
 
-  @QueryHandler
-  public CompletableFuture<List<Product>> findAll(FindAll findAll) {
-    return productRepository.findAll().collectList().toFuture();
+  @QueryHandler(queryName = "findAll")
+  public List<Product> findAll() {
+    return productRepository.findAll();
   }
 
-  @QueryHandler
-  public CompletableFuture<Product> findByProductId(FindByProductId findByProductId) {
+  @QueryHandler(queryName = "findByProductId")
+  public Product findByProductId(String productId) {
     return productRepository
-        .findById(findByProductId.getProductId())
-        .switchIfEmpty(
-            Mono.error(
-                new NotFoundException(
-                    String.format("Product %s not found", findByProductId.getProductId()))))
-        .toFuture();
+        .findById(productId)
+        .orElseThrow(() -> new NotFoundException(String.format("Product %s not found", productId)));
   }
 }

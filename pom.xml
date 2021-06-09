@@ -7,6 +7,7 @@
         <module>inventory-service</module>
         <module>common</module>
         <module>order-service</module>
+        <module>customer-service</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -18,9 +19,10 @@
     <artifactId>bootiful</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>bootiful-microservices</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Bootiful Microservices</description>
     <properties>
         <java.version>16</java.version>
+        <axon-spring-boot-starter.version>4.5.1</axon-spring-boot-starter.version>
     </properties>
     <dependencies>
         <dependency>
@@ -29,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <dependency>
@@ -47,23 +49,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>io.projectreactor</groupId>
-            <artifactId>reactor-test</artifactId>
-            <scope>test</scope>
-        </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.axonframework/axon-spring-boot-starter -->
         <dependency>
             <groupId>org.axonframework</groupId>
             <artifactId>axon-spring-boot-starter</artifactId>
-            <version>4.5.1</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.axonframework.extensions.reactor/axon-reactor-spring-boot-starter -->
-        <dependency>
-            <groupId>org.axonframework.extensions.reactor</groupId>
-            <artifactId>axon-reactor-spring-boot-starter</artifactId>
-            <version>4.5</version>
+            <version>${axon-spring-boot-starter.version}</version>
         </dependency>
     </dependencies>
 
@@ -72,7 +62,7 @@
             <dependency>
                 <groupId>com.uuhnaut69</groupId>
                 <artifactId>common</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

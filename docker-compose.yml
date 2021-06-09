@@ -13,3 +13,13 @@ services:
     image: mongo
     ports:
       - 27017:27017
+
+  customer-database:
+    container_name: customer-database
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432

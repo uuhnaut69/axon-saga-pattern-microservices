@@ -1,34 +1,31 @@
 package com.uuhnaut69.inventory.api;
 
 import com.uuhnaut69.inventory.query.Product;
-import com.uuhnaut69.inventory.query.type.FindAll;
-import com.uuhnaut69.inventory.query.type.FindByProductId;
 import lombok.RequiredArgsConstructor;
-import org.axonframework.extensions.reactor.queryhandling.gateway.ReactorQueryGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
+import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/products")
 public class ProductQueryController {
 
-  private final ReactorQueryGateway reactorQueryGateway;
+  private final QueryGateway queryGateway;
 
   @GetMapping
-  public Mono<List<Product>> findAll() {
-    return reactorQueryGateway.query(
-        new FindAll(), ResponseTypes.multipleInstancesOf(Product.class));
+  public CompletableFuture<List<Product>> findAll() {
+    return queryGateway.query("findAll", null, ResponseTypes.multipleInstancesOf(Product.class));
   }
 
   @GetMapping("/{productId}")
-  public Mono<Product> findByProductId(@PathVariable String productId) {
-    return reactorQueryGateway.query(new FindByProductId(productId), Product.class);
+  public CompletableFuture<Product> findByProductId(@PathVariable String productId) {
+    return queryGateway.query("findByProductId", productId, Product.class);
   }
 }
