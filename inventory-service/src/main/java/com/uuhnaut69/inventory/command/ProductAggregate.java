@@ -4,6 +4,7 @@ import com.uuhnaut69.inventory.core.CreateProductCommand;
 import com.uuhnaut69.inventory.core.CreatedProductEvent;
 import com.uuhnaut69.inventory.core.UpdateProductCommand;
 import com.uuhnaut69.inventory.core.UpdatedProductEvent;
+import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
 @Aggregate
+@NoArgsConstructor
 public class ProductAggregate {
 
   @AggregateIdentifier private String productId;
@@ -65,6 +67,4 @@ public class ProductAggregate {
     this.price = updatedProductEvent.getPrice();
     this.stock = updatedProductEvent.getStock();
   }
-
-  protected ProductAggregate() {}
 }
