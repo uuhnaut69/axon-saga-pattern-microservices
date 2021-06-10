@@ -1,6 +1,7 @@
 package com.uuhnaut69.customer.query;
 
 import com.uuhnaut69.common.exception.NotFoundException;
+import com.uuhnaut69.customer.core.AddedCreditEvent;
 import com.uuhnaut69.customer.core.CreatedCustomerEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,15 @@ public class CustomerProjection {
     customerRepository.save(customer);
   }
 
+  @EventHandler
+  @Transactional
+  public void handle(AddedCreditEvent addedCreditEvent) {
+    log.info("Received added credit event {}", addedCreditEvent);
+    var customer = findById(UUID.fromString(addedCreditEvent.getCustomerId()));
+    customer.setCredit(addedCreditEvent.getCredit());
+    customerRepository.save(customer);
+  }
+
   @QueryHandler(queryName = "findAllCustomer")
   public List<Customer> findAllCustomer() {
     return customerRepository.findAll();
@@ -38,6 +48,10 @@ public class CustomerProjection {
 
   @QueryHandler(queryName = "findByCustomerId")
   public Customer findAllCustomer(UUID customerId) {
+    return findById(customerId);
+  }
+
+  private Customer findById(UUID customerId) {
     return customerRepository
         .findById(customerId)
         .orElseThrow(
