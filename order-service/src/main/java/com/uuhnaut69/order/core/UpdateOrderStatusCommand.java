@@ -1,18 +1,17 @@
-package com.uuhnaut69.customer.core;
+package com.uuhnaut69.order.core;
 
+import com.uuhnaut69.order.command.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-import java.math.BigDecimal;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddCreditCommand {
+public class UpdateOrderStatusCommand {
 
-  @TargetAggregateIdentifier private String customerId;
+  @TargetAggregateIdentifier private String orderId;
 
-  private BigDecimal credit;
+  private OrderStatus status;
 }
