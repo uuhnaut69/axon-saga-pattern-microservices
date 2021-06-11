@@ -1,4 +1,4 @@
-package com.uuhnaut69.customer.core;
+package com.uuhnaut69.common.ordersaga;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,11 +9,9 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreatedCustomerEvent {
+public class CompensatedCustomerBalanceEvent {
 
   private String customerId;
 
-  private String username;
-
-  private BigDecimal balance;
+  private BigDecimal amount;
 }

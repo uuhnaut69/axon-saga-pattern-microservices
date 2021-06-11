@@ -3,11 +3,17 @@ server:
 spring:
   application:
     name: order-application
-  data:
-    mongodb:
-      database: inventory
-      host: localhost
-      port: 27017
+  jpa:
+    show-sql: false
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+      use-new-id-generator-mappings: true
+    generate-ddl: true
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres
+    username: postgres
+    password: postgres
 axon:
   axonserver:
     servers: localhost

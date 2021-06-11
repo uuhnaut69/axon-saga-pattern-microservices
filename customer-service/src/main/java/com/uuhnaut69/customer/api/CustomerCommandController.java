@@ -1,8 +1,8 @@
 package com.uuhnaut69.customer.api;
 
 import com.uuhnaut69.customer.api.request.CustomerRequest;
-import com.uuhnaut69.customer.core.AddCreditCommand;
 import com.uuhnaut69.customer.core.CreateCustomerCommand;
+import com.uuhnaut69.customer.core.DepositCommand;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.http.HttpStatus;
@@ -28,9 +28,9 @@ public class CustomerCommandController {
         new CreateCustomerCommand(UUID.randomUUID().toString(), customerRequest.username()));
   }
 
-  @PutMapping("/{customerId}/add-credit/{credit}")
-  public CompletableFuture<AddCreditCommand> addCredit(
-      @PathVariable String customerId, @PathVariable BigDecimal credit) {
-    return commandGateway.send(new AddCreditCommand(customerId, credit));
+  @PutMapping("/{customerId}/deposit/{balance}")
+  public CompletableFuture<DepositCommand> deposit(
+      @PathVariable String customerId, @PathVariable BigDecimal balance) {
+    return commandGateway.send(new DepositCommand(customerId, balance));
   }
 }

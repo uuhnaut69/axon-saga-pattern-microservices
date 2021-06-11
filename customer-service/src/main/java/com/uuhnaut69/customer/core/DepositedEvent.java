@@ -9,11 +9,9 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreatedCustomerEvent {
+public class DepositedEvent {
 
   private String customerId;
-
-  private String username;
 
   private BigDecimal balance;
 }

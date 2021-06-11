@@ -23,3 +23,13 @@ services:
       - POSTGRES_PASSWORD=postgres
     ports:
       - 5432:5432
+
+  order-database:
+    container_name: order-database
+    image: postgres
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5433:5432

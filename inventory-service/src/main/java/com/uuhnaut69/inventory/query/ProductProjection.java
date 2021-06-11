@@ -1,6 +1,7 @@
 package com.uuhnaut69.inventory.query;
 
 import com.uuhnaut69.common.exception.NotFoundException;
+import com.uuhnaut69.common.ordersaga.ReservedProductStockSuccessfullyEvent;
 import com.uuhnaut69.inventory.core.CreatedProductEvent;
 import com.uuhnaut69.inventory.core.UpdatedProductEvent;
 import lombok.RequiredArgsConstructor;
@@ -21,29 +22,36 @@ public class ProductProjection {
 
   @EventHandler
   @Transactional
-  public void handle(CreatedProductEvent createdProductEvent) {
-    log.info("Received created product event {}", createdProductEvent);
+  public void handle(CreatedProductEvent event) {
+    log.debug("Received created product event {}", event);
     var product =
         new Product(
-            createdProductEvent.getProductId(),
-            createdProductEvent.getName(),
-            createdProductEvent.getDescription(),
-            createdProductEvent.getPrice(),
-            createdProductEvent.getStock());
+            event.getProductId(),
+            event.getName(),
+            event.getDescription(),
+            event.getPrice(),
+            event.getStock());
     productRepository.save(product);
   }
 
   @EventHandler
   @Transactional
-  public void handle(UpdatedProductEvent updatedProductEvent) {
-    log.info("Received updated product event {}", updatedProductEvent);
-    var product =
-        new Product(
-            updatedProductEvent.getProductId(),
-            updatedProductEvent.getName(),
-            updatedProductEvent.getDescription(),
-            updatedProductEvent.getPrice(),
-            updatedProductEvent.getStock());
+  public void handle(UpdatedProductEvent event) {
+    log.debug("Received updated product event {}", event);
+    var product = findById(event.getProductId());
+    product.setName(event.getName());
+    product.setDescription(event.getDescription());
+    product.setPrice(event.getPrice());
+    product.setStock(event.getStock());
+    productRepository.save(product);
+  }
+
+  @EventHandler
+  @Transactional
+  public void handle(ReservedProductStockSuccessfullyEvent event) {
+    log.debug("Received reserved product's stock successfully event {}", event);
+    var product = findById(event.getProductId());
+    product.setStock(product.getStock() - event.getQuantity());
     productRepository.save(product);
   }
 
@@ -54,6 +62,10 @@ public class ProductProjection {
 
   @QueryHandler(queryName = "findByProductId")
   public Product findByProductId(String productId) {
+    return findById(productId);
+  }
+
+  private Product findById(String productId) {
     return productRepository
         .findById(productId)
         .orElseThrow(() -> new NotFoundException(String.format("Product %s not found", productId)));

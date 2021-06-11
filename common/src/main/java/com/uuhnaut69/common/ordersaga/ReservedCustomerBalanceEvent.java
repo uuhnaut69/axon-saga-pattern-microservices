@@ -1,4 +1,4 @@
-package com.uuhnaut69.customer.core;
+package com.uuhnaut69.common.ordersaga;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +9,9 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddedCreditEvent {
+public class ReservedCustomerBalanceEvent {
 
   private String customerId;
 
-  private BigDecimal credit;
+  private BigDecimal totalPrice;
 }
