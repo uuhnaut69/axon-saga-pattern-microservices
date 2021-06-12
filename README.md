@@ -1,5 +1,11 @@
 # Saga Pattern Microservices
 
+Simple order flow to demo concept based on `Spring`, `Axon-Framework`
+- Event driven architecture
+- Event sourcing
+- CQRS  
+- Saga pattern (Orchestration)
+
 ## Prerequisites
 
 - `Java 16`
