@@ -22,7 +22,7 @@
     <description>Bootiful Microservices</description>
     <properties>
         <java.version>16</java.version>
-        <axon-spring-boot-starter.version>4.5.13</axon-spring-boot-starter.version>
+        <axon-spring-boot-starter.version>4.5.14</axon-spring-boot-starter.version>
     </properties>
     <dependencies>
         <dependency>
